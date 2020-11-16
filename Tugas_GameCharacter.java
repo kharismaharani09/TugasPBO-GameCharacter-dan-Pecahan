@@ -1,78 +1,96 @@
-import java.util.*;
-
-class GameCharacter
+class Game_Character
 {
-    Scanner inputUser = new Scanner(System.in);
     String name;
-    int lifepoint, totalhit, totalkick, attackHitPoint, attackKickPoint, pukulan, tendangan, totalpointRaiden, totalpointSubzero; 
-    GameCharacter()
+    int lifepoint = 100;
+    int attackHitpoint;
+    int attackKickpoint;
+
+    Game_Character(String inputName, int inputAttackHitpoint, int inputAttackKickpoint)
     {
-        System.out.println("-----RONDE 1-----");
-        attackKickPoint(1, 20, 100);
-        System.out.println("Lifepoint sementara Subzero : " + totalkick);
-        attackKickPoint(1, 25, 100);
-        System.out.println("Lifepoint sementara Raiden : " + totalkick + "\n");
+        this.name = inputName;
+        this.attackHitpoint = inputAttackHitpoint;
+        this.attackKickpoint = inputAttackKickpoint;
+        int lifepoint;
+    }
 
-        System.out.println("-----RONDE 2-----");
-        attackHitPoint(3, 5, 75);
-        System.out.println("Lifepoint Sementara Raiden = " + totalhit);
-        attackKickPoint(4, 20, 80);
-        System.out.println("Lifepoint Sementara Subzero = " + totalkick + "\n");
-
-        if (totalkick == 0 || totalhit == 0)
+    void hit(Game_Character lawan, int inputAttackhitpoint)
+    {
+        this.attackHitpoint = inputAttackhitpoint;
+        System.out.print(this.name + " memukul " + lawan.name + " dengan kekuatan " + inputAttackhitpoint + " maka lifepoint " + lawan.name + " : ");
+        
+        if(lifepoint >= inputAttackhitpoint)
         {
-            System.out.println("---GAME SELESAI---");
-            totalpointRaiden = totalhit;
-            System.out.println("Lifepoint Akhir Raiden : " + totalpointRaiden);
-            totalpointSubzero = totalkick;
-            System.out.println("Lifepoint Akhir Subzero: " + totalpointSubzero + "\n");
-        }
-
-        // penentuan
-        if (totalpointRaiden == totalpointSubzero)
-        {
-            System.out.println("SERI");
-        }
-        else if (totalpointSubzero >= totalpointRaiden)
-        {
-            System.out.println("SUBZERO MENANG");
+            lifepoint -= inputAttackhitpoint;
+            System.out.println(lifepoint);
         }
         else
         {
-            System.out.println("RAIDEN MENANG");
+            lifepoint = 0;
         }
-
     }
 
-    public void attackKickPoint(int tendangan,int attackKickPoint, int lifepoint)
+    void kick(Game_Character lawan, int inputAttackkickpoint)
     {
-        for(int i = 1; i <= tendangan; i++)
+        this.attackKickpoint = inputAttackkickpoint;
+        System.out.print(this.name + " menendang " + lawan.name + " dengan kekuatan " + inputAttackkickpoint + " maka lifepoint " + lawan.name + " : ");
+        
+        if(lifepoint >= inputAttackkickpoint)
         {
-            totalkick = lifepoint - (attackKickPoint*tendangan);
-        }  
+            lifepoint -= inputAttackkickpoint;
+            System.out.println(lifepoint);
+        }
+        else
+        {
+            lifepoint = 0;
+        }
     }
 
-    public void attackHitPoint(int pukulan, int attackHitPoint, int lifepoint)
+    void selesai(Game_Character lawan)
     {
-        for(int i = 1; i <= pukulan; i++)
+        if(lifepoint == 0)
         {
-            totalhit = lifepoint - (attackHitPoint*pukulan);
-        } 
+            System.out.print("PEMENANG = " + this.name);
+        }
     }
     
-    public int getlifePoint() 
+    int lifepoint()
     {
         return lifepoint;
     }
 
-    public String getName() {
+    String name()
+    {
         return name;
     }
+
 }
-public class Tugas_GameCharacter
-{
-    public static void main(String[] args)
-    {
-        GameCharacter obj = new GameCharacter();
+public class Tugas_GameCharacter{
+    public static void main(String[] args) {
+        System.out.println("---GAME---");
+        System.out.println("Lifepoints Raiden : 100");
+        System.out.println("Lifepoints Subzero : 100\n");
+
+        Game_Character Obj1 = new Game_Character("Raiden", 10, 20);
+        Game_Character Obj2 = new Game_Character("Subzero", 5, 25);
+
+        System.out.println("---RONDE 1---");
+        Obj1.kick(Obj2, 20); 
+        Obj2.kick(Obj1, 25); 
+        System.out.print("\n");
+
+        System.out.println(("---RONDE 2---"));
+        for (int i = 1; i <= 3; i++)
+        {
+            Obj2.hit(Obj1, 5);
+        }
+        for (int i = 1; i <= 4; i++)
+        {
+            Obj1.kick(Obj2, 20);
+        }
+        System.out.print("\n");
+
+        System.out.println(("---PENENTUAN---"));
+        Obj1.selesai(Obj2);
+        System.out.println("\n");
     }
 }
